@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Summarizer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 420px;
+      min-height: 300px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      color: #1a1a1a;
+      background: #f8f9fa;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px 20px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .header p {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .content {
+      padding: 16px 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .status.info {
+      background: #e8f4fd;
+      color: #1565c0;
+      display: block;
+    }
+
+    .status.error {
+      background: #fce4ec;
+      color: #c62828;
+      display: block;
+    }
+
+    .status.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      display: block;
+    }
+
+    .results {
+      margin-top: 16px;
+      display: none;
+    }
+
+    .results.visible {
+      display: block;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-card .value {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .stat-card .label {
+      font-size: 11px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    .stat-card.positive .value { color: #2e7d32; }
+    .stat-card.negative .value { color: #c62828; }
+    .stat-card.neutral .value { color: #f57f17; }
+
+    .summary-section {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .summary-section h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .summary-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #444;
+      white-space: pre-line;
+    }
+
+    .loader {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Review Summarizer</h1>
+    <p>NLP-анализ и суммаризация отзывов</p>
+  </div>
+
+  <div class="content">
+    <button id="analyzeBtn" class="btn btn-primary">
+      Собрать и проанализировать отзывы
+    </button>
+
+    <div id="status" class="status"></div>
+
+    <div id="results" class="results">
+      <div class="stats">
+        <div class="stat-card positive">
+          <div class="value" id="positiveCount">0</div>
+          <div class="label">Положительные</div>
+        </div>
+        <div class="stat-card negative">
+          <div class="value" id="negativeCount">0</div>
+          <div class="label">Отрицательные</div>
+        </div>
+        <div class="stat-card neutral">
+          <div class="value" id="neutralCount">0</div>
+          <div class="label">Нейтральные</div>
+        </div>
+      </div>
+
+      <div class="summary-section">
+        <h3>Резюме отзывов</h3>
+        <div class="summary-text" id="summaryText"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
